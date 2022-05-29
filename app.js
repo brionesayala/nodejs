@@ -5,25 +5,19 @@ const port = process.env.PORT || 3000;
 
 //Motor de plantillas
 app.set('view engine' , 'ejs');
-
 app.set('views', __dirname + '/views')
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', (req, res) => {
-    res.render("index", {titulo: "Mi titulo dinamicos"})
-})
-
-app.get('/', (req, res) => {
-    res.send('Mi respuesta desde express')
-})
-
-app.get('/servicios', (req, res) => {
-    res.render("servicios", {tituloServicios: "Este es un mensaje dinamico de servicios"})
-})
+//Rutas Web
+app.use("/", require('./router/RutasWeb'))
+app.use("/mascotas", require('./router/Mascotas'))
 
 app.use((req, res, next) => {
-    res.status(404).render("404")
+    res.status(404).render("404", {
+        titulo: "404",
+        descripcion: "Titulo del sitio web"
+    })
 })
 
 app.listen(port, () => {
